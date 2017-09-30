@@ -1,14 +1,21 @@
-def blog_search(request):
-    if 's' in request.GET:
-        s = request.GET['s']
-        if not s:
-            return render(request,'home.html')
-        else:
-            post_list = Article.objects.filter(title__icontains = s)
-            if len(post_list) == 0 :
-                return render(request,'archives.html', {'post_list' : post_list,
-                                                    'error' : True})
-            else :
-                return render(request,'archives.html', {'post_list' : post_list,
-                                                    'error' : False})
-    return redirect('/')
+{% extends "base.html" %}
+
+{% block content %}
+<div class="posts">
+    {% if error %}
+        <h2 class="post-title">NOT Found</a></h2>
+    {% else %}
+    {% for post in post_list %}
+        <section class="post">
+            <header class="post-header">
+                <h2 class="post-title"><a href="{% url "detail" id=post.id %}">{{ post.title }}</a></h2>
+
+                    <p class="post-meta">
+                        Time:  <a class="post-author" href="#">{{ post.date_time |date:"Y /m /d"}}</a> <a class="post-category post-category-js" href="{% url "search_tag" tag=post.category %}">{{ post.category }}</a>
+                    </p>
+            </header>
+        </section>
+    {% endfor %}
+    {% endif %}
+</div><!-- /.blog-post -->
+{% endblock %}
