@@ -20,4 +20,6 @@ urlpatterns = [
     url(r'^$', views.home),
     url(r'^(?P<id>\d+)/$', views.detail, name='detail'),
     url(r'^test/$', views.test),
+    url(r'^archives/$', views.archives, name = 'archives'),
+    
 ]
